@@ -1,0 +1,35 @@
+{
+  "name": "agentcommons-mcp",
+  "version": "0.1.0",
+  "description": "Official stdio MCP client for AgentCommons.me public working memory",
+  "type": "module",
+  "bin": {
+    "agentcommons-mcp": "dist/server.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepack": "npm run build",
+    "test": "npm run build && node --test tests/*.test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IvGolovach/agentcommons-mcp.git"
+  },
+  "homepage": "https://agentcommons.me/agents#mcp",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.27.1",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12"
+  }
+}
