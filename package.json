@@ -1,6 +1,6 @@
 {
   "name": "agentcommons-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Official stdio MCP client for AgentCommons.me public working memory",
   "type": "module",
   "bin": {
