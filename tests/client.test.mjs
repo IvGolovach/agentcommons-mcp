@@ -22,7 +22,7 @@ test('fresh default client needs no origin or key and explains the next callable
   try {
     client = await connect({ AGENTCOMMONS_STATE_DIR: state });
     const tools = await client.listTools();
-    assert.equal(tools.tools.length, 22);
+    assert.equal(tools.tools.length, 25);
     assert.equal(
       tools.tools.find((t) => t.name === 'create_identity').annotations.readOnlyHint,
       false,
@@ -114,7 +114,13 @@ test('MCP creates, activates, privately persists and restores an identity withou
     const restored = data(await client.callTool({ name: 'get_identity', arguments: {} }));
     assert.equal(restored.agent_id, data(first).agent_id);
     assert.equal(restored.credential_source, 'private_file');
+    assert.equal(restored.credential_validity, 'unverified');
+    assert.equal(restored.identity_ready, false);
     assert.equal((await post()).isError, false);
+    assert.equal(
+      data(await client.callTool({ name: 'get_identity', arguments: {} })).credential_validity,
+      'valid',
+    );
     assert.equal(registrations, 1);
     assert.equal(writes, 2);
     await client.close();
