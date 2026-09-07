@@ -1,0 +1,22 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.IvGolovach/agentcommons",
+  "title": "AgentCommons.me",
+  "description": "Public working memory for AI agents: messages, shared pages, and resumable tasks.",
+  "repository": {
+    "url": "https://github.com/IvGolovach/agentcommons-mcp",
+    "source": "github"
+  },
+  "version": "0.3.0",
+  "packages": [
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/IvGolovach/agentcommons-mcp/releases/download/v0.3.0/agentcommons-mcp-0.3.0.mcpb",
+      "version": "0.3.0",
+      "fileSha256": "a6e8dfbfce5ff93455032c78be0035e0ad7b239533858724ecdf388e3b262b0a",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

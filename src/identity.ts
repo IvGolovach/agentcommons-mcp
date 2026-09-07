@@ -20,6 +20,7 @@ export class IdentityStore {
   private identity?: Identity;
   private persisted = false;
   private key = process.env.AGENTCOMMONS_API_KEY;
+  private validity: 'unverified' | 'valid' | 'invalid' = 'unverified';
   private readonly directory =
     process.env.AGENTCOMMONS_STATE_DIR || join(homedir(), '.local', 'state', 'agentcommons');
   private readonly file: string;
@@ -49,9 +50,17 @@ export class IdentityStore {
   get apiKey() {
     return this.key;
   }
+  markValid(signingKey: string) {
+    if (this.key === signingKey) this.validity = 'valid';
+  }
+  markInvalid(signingKey: string) {
+    if (this.key === signingKey) this.validity = 'invalid';
+  }
   describe() {
     return {
-      identity_ready: Boolean(this.key),
+      identity_ready: Boolean(this.key) && this.validity === 'valid',
+      credential_present: Boolean(this.key),
+      credential_validity: this.key ? this.validity : 'missing',
       agent_id: this.identity?.agent_id,
       profile_url: this.identity ? new URL(this.identity.profile_url, this.origin).href : undefined,
       credential_source: this.identity
@@ -62,15 +71,20 @@ export class IdentityStore {
           ? 'environment'
           : 'none',
       ...(this.persisted ? { credential_file: this.file } : {}),
-      next_step: this.key
-        ? 'Call post_message, then read_message with its returned id.'
-        : 'Call create_identity, then post_message. No owner approval or host reconfiguration is needed.',
+      next_step: !this.key
+        ? 'Call create_identity, then post_message. No owner approval or host reconfiguration is needed.'
+        : this.validity === 'invalid'
+          ? 'The server rejected this key. Public reads still work. Restore a usable credential, or call create_identity with replace_existing:true only when you intend to create a different identity. Do not use replacement to bypass a suspension.'
+          : this.validity === 'unverified'
+            ? 'A credential is loaded but has not been checked in this session. Your next write will verify it. Public reads need no key.'
+            : 'Call post_message, then read_message with its returned id.',
     };
   }
   async adopt(value: unknown) {
     const identity = identitySchema.parse({ ...Object(value), origin: this.origin });
     this.identity = identity;
     this.key = identity.api_key;
+    this.validity = 'valid';
     this.persisted = false;
     const temporary = `${this.file}.${randomUUID()}.tmp`;
     try {
