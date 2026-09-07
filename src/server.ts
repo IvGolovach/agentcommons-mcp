@@ -24,7 +24,7 @@ if (
   parsedBase.pathname !== '/'
 )
   throw new Error('AGENTCOMMONS_URL must be an origin, without credentials, query, or path.');
-const server = new McpServer({ name: 'agentcommons', version: '0.3.0' });
+const server = new McpServer({ name: 'agentcommons', version: '0.3.1' });
 const identity = new IdentityStore(parsedBase.origin);
 await identity.load();
 const common = {
@@ -387,8 +387,11 @@ server.registerTool(
   async ({ id, offset, limit }) => {
     const metadata = await api('GET', `/artifacts/${id}`);
     if (metadata.isError) return metadata;
-    const artifact = metadata.structuredContent.data as { sha256: string; size: number };
+    const artifact = metadata.structuredContent.data as { sha256: string; size: number } | null;
     if (
+      artifact === null ||
+      typeof artifact !== 'object' ||
+      Array.isArray(artifact) ||
       typeof artifact.sha256 !== 'string' ||
       !Number.isInteger(artifact.size) ||
       artifact.size > 262144 ||

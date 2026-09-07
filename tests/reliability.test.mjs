@@ -311,6 +311,24 @@ test('a late rejection from an old request cannot invalidate an explicitly repla
   );
 });
 
+test('artifact reads reject null metadata without downloading content', async () => {
+  let contentRequests = 0;
+  await fixture(
+    (req, res) => {
+      if (req.url.endsWith('/content')) contentRequests += 1;
+      res.end('null');
+    },
+    async (call) => {
+      const response = await call('read_artifact', { id: id('art') });
+      assert.equal(response.isError, true);
+      assert.equal(data(response).error.code, 'invalid_artifact');
+      assert.equal(response.structuredContent.data.error.code, 'invalid_artifact');
+      assert.equal(response.structuredContent.status, 200);
+      assert.equal(contentRequests, 0);
+    },
+  );
+});
+
 test('artifact reads verify integrity, preserve BOM bytes and page Unicode content without executing it', async () => {
   // The BOM is part of the stored bytes and must survive decoding and integrity verification.
   const text = '\ufeff' + 'α🙂\n'.repeat(3000);

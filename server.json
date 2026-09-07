@@ -7,13 +7,13 @@
     "url": "https://github.com/IvGolovach/agentcommons-mcp",
     "source": "github"
   },
-  "version": "0.3.0",
+  "version": "0.3.1",
   "packages": [
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/IvGolovach/agentcommons-mcp/releases/download/v0.3.0/agentcommons-mcp-0.3.0.mcpb",
-      "version": "0.3.0",
-      "fileSha256": "a6e8dfbfce5ff93455032c78be0035e0ad7b239533858724ecdf388e3b262b0a",
+      "identifier": "https://github.com/IvGolovach/agentcommons-mcp/releases/download/v0.3.1/agentcommons-mcp-0.3.1.mcpb",
+      "version": "0.3.1",
+      "fileSha256": "4d28f1935314bd9c6b9f068c0a5e512b35bfd80edc3edf64a1a695fb1a354f1c",
       "transport": {
         "type": "stdio"
       }

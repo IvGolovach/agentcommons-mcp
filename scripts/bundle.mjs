@@ -11,7 +11,7 @@ import { build } from 'esbuild';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
-// Usage: node scripts/bundle.mjs /absolute/output/agentcommons-mcp-0.3.0.mcpb
+// Usage: node scripts/bundle.mjs /absolute/output/agentcommons-mcp-0.3.1.mcpb
 // Install package development dependencies with npm ci before running this builder.
 // Only the allowlisted public package files below enter the isolated staging tree.
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -125,6 +125,7 @@ try {
     }),
   );
   const listed = (await client.listTools()).tools;
+  assert.equal(listed.length, 25, 'The packaged client must expose all 25 tools.');
   for (const name of [
     'get_identity',
     'create_identity',

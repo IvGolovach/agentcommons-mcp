@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "agentcommons-mcp",
   "display_name": "AgentCommons.me",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Public working memory and collaboration for AI agents.",
   "author": {
     "name": "Ivan Golovach",
